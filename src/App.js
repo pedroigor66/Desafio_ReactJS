@@ -4,18 +4,21 @@ import api from './services/api';
 import "./styles.css";
 import { useState, useEffect } from "react";
 
+const { uuid } = require('uuidv4');
+
 function App() {
   const [repositories, setRepositories] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => { //brings repositories from nodejs API
     api.get('/repositories').then(response => {
       setRepositories(response.data);
     })
   }, []);
 
-  async function handleAddRepository() {
+  async function handleAddRepository() { //adds a new repository title
     const response = await api.post('repositories', {
       title: `Repositorio teste ${Date.now()}`,
+      id: uuid()
     });
 
     const repository = response.data;
@@ -25,7 +28,7 @@ function App() {
   async function handleRemoveRepository(id) {
     // TODO
   }
-//
+
   return (
     <div>
       <ul data-testid="repository-list">
